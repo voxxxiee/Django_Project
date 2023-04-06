@@ -130,3 +130,6 @@ dmypy.json
 .DS_Store
 .Trashes
 *.swp
+
+#vscode stuff
+.[Vv]scode/
