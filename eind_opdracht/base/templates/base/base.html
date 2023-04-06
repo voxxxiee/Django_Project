@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %} {% endblock %}</title>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+    </head>
+    <body>
+    <header> 
+       {% include 'base/menu.html' %} 
+    </header> 
+    <main>
+        {% block content %} {% endblock %}
+    </main>
+    <footer>
+
+    </footer>
+    </body>
+</html>
