@@ -125,3 +125,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#MACOS stuff
+.DS_Store
+.Trashes
+*.swp
