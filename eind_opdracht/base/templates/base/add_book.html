@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Boek toevoegen{% endblock %}
+{% block content %}
+	<h2>Boek toevoegen</h2>
+	<form method="POST">
+		<div class="mb-3">
+			{% csrf_token %}
+			{{ form.as_p }}
+		</div>
+		<input type="submit" class="btn btn-primary" value="Save">
+	</form>
+{% endblock %}
