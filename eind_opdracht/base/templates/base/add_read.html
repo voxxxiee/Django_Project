@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Leesactie toevoegen{% endblock %}
+{% block content %}
+	<h2>Leesactie toevoegen</h2>
+	<form method="POST">
+		<div class="mb-3">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<span id="stars"></span>
+		</div>
+		<input type="submit" class="btn btn-primary" value="Save">
+	</form>
+	<script>
+		// de range input om te bepalen hoeveel sterren er moeten zijn.
+		var rangeInput = document.getElementById("{{ form.score.id_for_label }}");
+		// de span waar de sterren in komen.
+		var starsSpan = document.getElementById("stars");
+
+		// als de input veranderd moeten de sterren getoont worden
+		rangeInput.addEventListener('input', () => {
+			// clear de span bij elke verandering
+			starsSpan.innerHTML = "";
+			// loop voor het aantal sterren toevoegen
+			for (var i = 0; i < rangeInput.value; i++)
+			{
+				// maak een material icons ster aan en voeg die aan de span toe.
+				var star = document.createElement("i");
+				star.classList.add("material-icons");
+				star.innerHTML = "star";
+				starsSpan.appendChild(star);
+			}
+		});
+	</script>
+{% endblock %}
