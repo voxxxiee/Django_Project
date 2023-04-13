@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.formats import numberformat
+from django.contrib.auth import  login
+from django.contrib.auth.forms import UserCreationForm
 
 from base.forms import LeesActieForm
 from .models import Book, Read
@@ -80,3 +82,17 @@ def add_read(request, pk=None):
 
     context = {'form': form}
     return render(request, 'base/add_read.html', context)
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('base:index')
+    else:
+        form = UserCreationForm()
+        
+    context = {'form': form}
+    return render(request, 'registration/register.html', context)
