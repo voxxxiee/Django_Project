@@ -24,7 +24,7 @@ class Book(models.Model):
     approved_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title} by {self.author}  -  {self.genre} -  {self.number_of_pages} pages"
+        return f"{self.title} door {self.author}  -  {self.genre} -  {self.number_of_pages} pagina's"
 
 
 
@@ -35,7 +35,7 @@ class Read(models.Model):
     score = models.IntegerField(max_length=1)
 
     def __str__(self):
-        return f"{self.user.username} read {self.book.title} on {self.date} and gave it a score of {self.score}"
+        return f"{self.user.username} gelezen {self.book.title} op {self.date} en gaf het een score van {self.score}"
 
 
 @receiver(post_save, sender=User)
