@@ -11,4 +11,5 @@ urlpatterns = [
     path('bookform/<int:pk>/', views.add_book, name="bookform"),
     path('readform/', views.add_read, name="readform"),
     path('readform/<int:pk>/', views.add_read, name="readform"),
+    path('readfeed/', views.read_feed, name="readfeed"),
 ]

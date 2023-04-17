@@ -84,6 +84,12 @@ def add_read(request, pk=None):
     return render(request, 'base/add_read.html', context)
 
 
+def read_feed(request):
+    actions = Read.objects.all().order_by('-date')
+    context = {'actions': actions}
+    return render(request, 'base/readfeed.html', context)
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
