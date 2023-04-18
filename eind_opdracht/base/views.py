@@ -37,9 +37,7 @@ def add_book(request, pk=None):
 
         if form.is_valid():
             book = form.save(commit=False)
-            print(request.user.get_username())
             if request.user.get_username() == "admin":
-                print("BOOEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
                 book.approved = True
                 book.approved_by = request.user
             book.save()
