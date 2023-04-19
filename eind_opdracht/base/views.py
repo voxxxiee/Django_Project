@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.formats import numberformat
 from django.contrib.auth import  login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from base.forms import LeesActieForm
 from .models import Book, Read
@@ -34,7 +36,11 @@ def add_book(request, pk=None):
             form.add_error("number_of_pages", "Je moet een positief nummer geven voor het aantal pagina's")
 
         if form.is_valid():
-            form.save()
+            book = form.save(commit=False)
+            if request.user.get_username() == "admin":
+                book.approved = True
+                book.approved_by = request.user
+            book.save()
             messages.success(request, "Het boek is succesvol opgeslagen!")
             return redirect("")
     else:
