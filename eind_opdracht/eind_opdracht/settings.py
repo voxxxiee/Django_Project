@@ -126,3 +126,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #auth stuff
 LOGIN_REDIRECT_URL = 'base:index'
+LOGOUT_REDIRECT_URL = 'base:login'
+LOGIN_URL = 'base:login'
