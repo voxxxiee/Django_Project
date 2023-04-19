@@ -1,17 +1,59 @@
 {% load static %}
-<nav class="navbar navbar-light" style="background-color: #193b5f">
-    <ul class="nav justify-content-center">
+<nav class="navbar navbar-expand-lg" style="background-color: #e8ddc7">
+  <div class="container-fluid">
+    <a class="navbar-brand" href={% url 'base:index' %}>
+      <img src="{% static 'img/logo.png' %}" alt="" width="57" height="34" class="d-inline-block align-text-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      {% if user.is_authenticated %}  
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Active</a>
+          <a class="nav-link" href={% url 'base:bookform'%}>Boek toevoegen</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+        {% if user.is_staff%}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item disabled" href="#">Boek goedkeuren</a></li>
+            <li><a class="dropdown-item disabled" href="#">Boek aanpassen</a></li>
+            <li><a class="dropdown-item disabled" href="#">Lees acties verwijderen</a></li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Disabled</a>
+        {% endif %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            User
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item disabled" href="#">Lees acties zien</a></li>
+            <li><a class="dropdown-item disabled" href={% url 'base:readform' %}>Lees acties aanpassen</a></li>
+            <li><a class="dropdown-item" href={% url 'base:readform' %}>Lees acties toevoegen</a></li>
+          </ul>
         </li>
       </ul>
+      <a href="{% url 'base:logout' %}">
+        <button class="btn btn-primary" type="submit">Logout</button>
+      </a>
+      {% endif %}
+      {% if not user.is_authenticated %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href={% url 'base:readfeed'%}>Newsfeed</a>
+        </li>
+      </ul>
+      <a href="{% url 'base:login' %}">
+          <button class="btn btn-primary" type="submit">Login</button>
+      </a>
+      &nbsp;
+      <a href="{% url 'base:register' %}">
+        <button class="btn btn-primary" type="submit">Sign Up</button>
+      </a>
+      {% endif %} 
+    </div>
+  </div>
 </nav>
