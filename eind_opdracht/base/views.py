@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
 from base.forms import LeesActieForm
-from .models import Book, Read
+from .models import Book, Read, Profile
 from .forms import BookForm, LeesActieForm
 from django.contrib import messages
 
@@ -108,3 +108,10 @@ def register(request):
         
     context = {'form': form}
     return render(request, 'registration/register.html', context)
+
+def profile_page(request):
+    #get current user
+    logged_in_user = request.user
+    #show all info about the user
+    context = {'user': logged_in_user}
+    return render(request, 'base/profile_page.html', context)
