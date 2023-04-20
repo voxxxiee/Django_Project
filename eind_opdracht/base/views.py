@@ -12,9 +12,12 @@ from django.contrib import messages
 
 
 def index(request):
-    return render(request, 'base/index.html')
+    actions = Read.objects.all().order_by('-date')[:2]
+    context = {'actions': actions}
+    return render(request, 'base/index.html', context)
 
 
+@login_required
 def add_book(request, pk=None):
     if request.method == "POST":
         if pk is not None:
@@ -53,6 +56,7 @@ def add_book(request, pk=None):
     return render(request, 'base/add_book.html', context)
 
 
+@login_required
 def add_read(request, pk=None):
     if request.method == "POST":
         if pk is not None:

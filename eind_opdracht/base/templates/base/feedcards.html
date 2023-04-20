@@ -1,0 +1,48 @@
+<div class="row row-cols-1 row-cols-md-2 g-4 text-black">
+	{% for action in actions %}
+		<div class="col">
+			<div class="card">
+				<div class="card-header">
+					<strong>Gelezen op: </strong> {{ action.date }} <br>
+				</div>
+				<div class="card-body">
+					<h3 class="card-title">{{ action.book.title }}</h3>
+					<h4 class="card-subtitle mb-2 text-muted">{{ action.book.author }}</h4>
+					<span style="display: none;" class="user_score">{{ action.score }}</span>
+					<strong>Score: </strong><span class="stars"></span><br>
+				</div>
+				<div class="card-footer">
+					<strong>Gelezen door: </strong> {{ action.user }} <br>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+<script>
+	// helaas weer dezelfde soort javascript, maar dit zou evt in een static js file kunnen komen als
+	// functie.
+	let actionAmount = parseInt("{{ actions|length }}"); 
+	// maak een lijst met elementen voor de scores en het tonen van de sterren
+	var starsSpans = document.querySelectorAll("[class='stars']");
+	var allScores = document.querySelectorAll("[class='user_score']");
+	for (let i = 0; i < actionAmount; i++)
+	{
+		// krijg de starspan uit de lijst
+		let starsSpan = starsSpans[i];
+		// dit is echt veelst te hacky maar het is een oplossing en heb niet meer trek om daar echt te
+		// veel tijd aan te verdoen...
+		// maar dit haalt de score van een gebruiker uit een hidden span waar de score in staat.
+		// je zou het waarschijnlijk met django template dingen doen maar daar kwam ik helaas niet uit.
+		let userScore = parseInt(allScores[i].innerHTML);
+		
+		// loop voor het aantal sterren toevoegen
+		for (let j = 0; j < userScore; j++)
+		{
+			// maak een material icons ster aan en voeg die aan de span toe.
+			let star = document.createElement("i");
+			star.classList.add("material-icons");
+			star.innerHTML = "star";
+			starsSpan.appendChild(star);
+		}
+	}
+</script>
