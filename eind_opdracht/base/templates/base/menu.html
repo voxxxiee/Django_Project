@@ -30,8 +30,7 @@
             Leesacties
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item disabled" href="#">Lees acties zien</a></li>
-            <li><a class="dropdown-item disabled" href={% url 'base:readform' %}>Lees acties aanpassen</a></li>
+			  <li><a class="dropdown-item" href="{% url 'base:readfeed' request.user %}">Mijn leesacties</a></li>
             <li><a class="dropdown-item" href={% url 'base:readform' %}>Lees acties toevoegen</a></li>
           </ul>
         </li>

@@ -12,7 +12,8 @@ from django.contrib import messages
 
 
 def index(request):
-    actions = Read.objects.all()[:2]
+    # pak de laatste 2 leesacties om op de pagina te tonen
+    actions = Read.objects.all().order_by('-pk')[:2]
     context = {'actions': actions}
     return render(request, 'base/index.html', context)
 
@@ -74,7 +75,7 @@ def add_read(request, pk=None):
         date = request.POST.get("date")
         book = request.POST.get("book")
         does_exist = Read.objects.filter(date=date, user=request.user, book=book).exists()
-        if does_exist is True:
+        if does_exist is True and pk is None:
             form.add_error("book", "Je kan niet hetzelfde boek op dezelfde dag lezen")
 
         if form.is_valid():
@@ -82,7 +83,8 @@ def add_read(request, pk=None):
             time.user = request.user
             time.save()
             messages.success(request, "De leesacite is succesvol opgeslagen!")
-            return redirect("")
+            # stuur de gebruiker naar zijn/haar pagina met leesacties
+            return redirect("base:readfeed", user=request.user)
     else:
         if pk is None:
             form = LeesActieForm()
@@ -94,9 +96,12 @@ def add_read(request, pk=None):
     return render(request, 'base/add_read.html', context)
 
 
-def read_feed(request):
-    actions = Read.objects.all().order_by('-date')
-    context = {'actions': actions}
+def read_feed(request, user=None):
+    if user is not None:
+        actions = Read.objects.filter(user__username=user)
+    else:
+        actions = Read.objects.all()
+    context = {'actions': actions.order_by('-date')}
     return render(request, 'base/readfeed.html', context)
 
 
@@ -109,16 +114,18 @@ def register(request):
             return redirect('base:index')
     else:
         form = UserCreationForm()
-        
+
     context = {'form': form}
     return render(request, 'registration/register.html', context)
 
+@login_required
 def profile_page(request):
     user = request.user
     profile = Profile.objects.get(user=user)
     context = {'profile': profile}
     return render(request, 'base/profile_page.html', context)
 
+@login_required
 def update_profile(request):
     user = request.user
     profile = Profile.objects.get(user=user)
