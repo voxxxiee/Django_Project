@@ -41,12 +41,12 @@ def add_book(request, pk=None):
 
         if form.is_valid():
             book = form.save(commit=False)
-            if request.user.get_username() == "admin":
+            if request.user.is_staff:
                 book.approved = True
                 book.approved_by = request.user
             book.save()
             messages.success(request, "Het boek is succesvol opgeslagen!")
-            return redirect("")
+            return redirect("base:index")
     else:
         if pk is None:
             form = BookForm()
@@ -118,12 +118,14 @@ def register(request):
     context = {'form': form}
     return render(request, 'registration/register.html', context)
 
+
 @login_required
 def profile_page(request):
     user = request.user
     profile = Profile.objects.get(user=user)
     context = {'profile': profile}
     return render(request, 'base/profile_page.html', context)
+
 
 @login_required
 def update_profile(request):
@@ -139,3 +141,15 @@ def update_profile(request):
         form = ProfileUpdateForm(instance=profile)
     context = {'form': form}
     return render(request, 'base/edit_profile.html', context)
+
+
+@login_required
+def delete_read(request, pk=None):
+    action = Read.objects.get(pk=pk)
+    if request.method == "POST":
+        if request.user == action.user or request.user.is_staff is True:
+            action.delete()
+            messages.success(request, "Leesactie succesvol verwijderd")
+            return redirect("base:index")
+    context = {'action': action}
+    return render(request, 'base/delete_read.html', context)
