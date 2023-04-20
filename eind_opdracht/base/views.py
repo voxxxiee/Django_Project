@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from base.forms import LeesActieForm
 from .models import Book, Read, Profile
-from .forms import BookForm, LeesActieForm
+from .forms import BookForm, LeesActieForm, ProfileUpdateForm
 from django.contrib import messages
 
 
@@ -114,3 +114,17 @@ def profile_page(request):
     profile = Profile.objects.get(user=user)
     context = {'profile': profile}
     return render(request, 'base/profile_page.html', context)
+
+def update_profile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.save()
+            return redirect('base:profile')
+    else:
+        form = ProfileUpdateForm(instance=profile)
+    context = {'form': form}
+    return render(request, 'base/edit_profile.html', context)
