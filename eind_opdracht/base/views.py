@@ -12,7 +12,7 @@ from django.contrib import messages
 
 
 def index(request):
-    actions = Read.objects.all().order_by('-date')[:2]
+    actions = Read.objects.all()[:2]
     context = {'actions': actions}
     return render(request, 'base/index.html', context)
 
