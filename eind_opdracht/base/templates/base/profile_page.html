@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Profile</h1>
+                <p>Username: <br> <strong> {{ profile.user }} </strong> </p>
+                <p>City:  <br> <strong> {{ profile.city }} </strong> </p>
+                <p>Date of birth: <br><strong> {{ profile.date_of_birth }} </strong> </p>
+                <p>Bio: <br> <strong> {{ profile.biotext }} </strong> </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

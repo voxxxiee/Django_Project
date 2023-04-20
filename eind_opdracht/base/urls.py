@@ -12,4 +12,5 @@ urlpatterns = [
     path('readform/', views.add_read, name="readform"),
     path('readform/<int:pk>/', views.add_read, name="readform"),
     path('readfeed/', views.read_feed, name="readfeed"),
+    path('profile/', views.profile_page, name="profile"),
 ]
