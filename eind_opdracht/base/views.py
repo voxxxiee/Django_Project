@@ -110,8 +110,7 @@ def register(request):
     return render(request, 'registration/register.html', context)
 
 def profile_page(request):
-    #get current user
-    logged_in_user = request.user
-    #show all info about the user
-    context = {'user': logged_in_user}
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    context = {'profile': profile}
     return render(request, 'base/profile_page.html', context)
