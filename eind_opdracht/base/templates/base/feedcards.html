@@ -1,3 +1,4 @@
+{% load static %}
 <div class="row row-cols-1 row-cols-md-2 g-4 text-black">
 	{% for action in actions %}
 		<div class="col">
@@ -10,10 +11,24 @@
 					<h4 class="card-subtitle mb-2 text-muted">{{ action.book.author }}</h4>
 					<span style="display: none;" class="user_score">{{ action.score }}</span>
 					<strong>Score: </strong><span class="stars"></span><br>
+					<br>
+					{% if action.user == request.user %}
+						<a href="{% url 'base:readform' action.pk %}" class="btn btn-primary">Aanpassen</a>
+						&nbsp;
+						<a href="{% url 'base:delete_read' action.pk %}" class="btn btn-danger">Verwijderen</a>
+					{% elif request.user.is_staff %}
+						<a href="{% url 'base:delete_read' action.pk %}" class="btn btn-danger">Verwijderen</a>
+					{% endif %}
 				</div>
 				<div class="card-footer">
 					<strong>Gelezen door: </strong> {{ action.user }} <br>
 				</div>
+			</div>
+		</div>
+	{% empty %}
+		<div class="col">
+			<div class="alert alert-warning">
+				Er zijn geen leesacties gevonden.
 			</div>
 		</div>
 	{% endfor %}

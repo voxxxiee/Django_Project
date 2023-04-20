@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% block title %}Leesactie verwijderen{% endblock %}
+{% block content %}
+	<h1>Leesactie verwijderen</h1>
+	<em>Weet u zeker dat u deze leesactie van "{{ action.user }}" wilt verwijderen?<br>
+		Deze is gelezen op {{ action.date }}
+	</em>
+	<br><br>
+	<strong>Boek: </strong>{{ action.book.title }}<br>
+	<span style="display: none;" id="user_score">{{ action.score }}</span>
+	<strong>Score: </strong><span id="stars"></span>
+	<br><br>
+	<form method="POST">
+		{% csrf_token %}
+		<input type="submit" class="btn btn-primary" value="Verwijderen">
+	</form>
+	<script>
+		window.onload = () => {
+			printStars();
+		};
+	</script>
+{% endblock %}

@@ -12,6 +12,8 @@ urlpatterns = [
     path('readform/', views.add_read, name="readform"),
     path('readform/<int:pk>/', views.add_read, name="readform"),
     path('readfeed/', views.read_feed, name="readfeed"),
+    path('readfeed/<str:user>/', views.read_feed, name="readfeed"),
     path('profile/', views.profile_page, name="profile"),
-    path('edit_profile/', views.update_profile, name='edit_profile')
+    path('edit_profile/', views.update_profile, name='edit_profile'),
+    path('delete_read/<int:pk>/', views.delete_read, name='delete_read'),
 ]

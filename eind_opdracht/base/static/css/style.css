@@ -12,7 +12,8 @@
     background-color: #8094DD;
     border-color: #8094DD;
 }
-.btn-primary
+
+button[class*="btn-"]
 {
     color: #000000;
 }
