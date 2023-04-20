@@ -2,5 +2,14 @@
 {% load static %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<h1>HIIII!!!</h1>
+	<h1>Boekenclub De Geletterde Kat</h1>
+	<p>
+	Welkom bij de website van boekenclub de Geletterde Kat!<br>
+	Hier kunt u leesacties toevoegen, bekijken en of boeken toevoegen om te lezen.
+	</p>
+	<h2>De 2 laatste leesacties</h2>
+	{% include "base/feedcards.html" %}
+	<br>
+	<button type="button" class="btn btn-link btn-lg" style="margin: 0 auto;;"><a href="{% url 'base:readfeed' %}" class="text-black">Leesacties</a></button>
+	<br>
 {% endblock %}
