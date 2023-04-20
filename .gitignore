@@ -135,4 +135,4 @@ dmypy.json
 .[Vv]scode/
 
 #database stuff
-.sqlite3
+*.sqlite3
