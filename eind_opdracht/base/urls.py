@@ -18,4 +18,5 @@ urlpatterns = [
     path('delete_read/<int:pk>/', views.delete_read, name='delete_read'),
     path('books/', views.books, name='books'),
     path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),
+    path('approve_book/<int:pk>/', views.approve_book, name='approve_book'),
 ]

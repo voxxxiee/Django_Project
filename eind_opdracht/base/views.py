@@ -193,3 +193,11 @@ def edit_book(request, pk=None):
         form = BookForm(instance=book)
     context = {'form': form}
     return render(request, "base/edit_book.html", context)
+
+def approve_book(request, pk):
+    book = Book.objects.get(pk=pk)
+    book.approved = True
+    book.approved_by = request.user
+    book.save()
+    messages.success(request, "Het boek is succesvol goedgekeurd!")
+    return redirect("base:books")
