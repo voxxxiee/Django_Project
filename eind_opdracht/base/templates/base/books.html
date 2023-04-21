@@ -29,7 +29,7 @@
 					<td>{{ book.approved|yesno:"Goedgekeurd,Niet Goedgekeurd" }}</td>
 					{% if user.is_staff %}
 						<td><a class="btn" href="{% url 'base:edit_book' book.pk %}">Aanpassen</a></td>
-						<td><a class="btn">Goedkeuren</a></td>
+						<td><a class="btn" href="{% url 'base:approve_book' book.pk %}">Goedkeuren</a></td>
 					{% endif %}
 				</tr>
 			{% empty %}
