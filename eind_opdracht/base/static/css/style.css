@@ -17,3 +17,8 @@ button[class*="btn-"]
 {
     color: #000000;
 }
+
+.table
+{
+	color: #FFFFFF;
+}

@@ -13,18 +13,9 @@
         <li class="nav-item">
           <a class="nav-link" href={% url 'base:bookform'%}>Boek toevoegen</a>
         </li>
-        {% if user.is_staff%}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Admin
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item disabled" href="#">Boek goedkeuren</a></li>
-            <li><a class="dropdown-item disabled" href="#">Boek aanpassen</a></li>
-            <li><a class="dropdown-item disabled" href="#">Lees acties verwijderen</a></li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link" href={% url 'base:books'%}>Boeken</a>
         </li>
-        {% endif %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Leesacties
