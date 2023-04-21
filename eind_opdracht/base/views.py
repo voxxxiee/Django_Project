@@ -4,7 +4,6 @@ from django.contrib.auth import  login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-
 from base.forms import LeesActieForm
 from .models import Book, Read, Profile
 from .forms import BookForm, LeesActieForm, ProfileUpdateForm
@@ -21,11 +20,7 @@ def index(request):
 @login_required
 def add_book(request, pk=None):
     if request.method == "POST":
-        if pk is not None:
-            book = Book.objects.get(pk=pk)
-            form = BookForm(request.POST, instance=book)
-        else:
-            form = BookForm(request.POST)
+        form = BookForm(request.POST)
 
         # om te checken of het boek niet stiekem al bestaat
         title = request.POST.get("title")
@@ -48,11 +43,7 @@ def add_book(request, pk=None):
             messages.success(request, "Het boek is succesvol opgeslagen!")
             return redirect("base:index")
     else:
-        if pk is None:
-            form = BookForm()
-        else:
-            book = Book.objects.get(pk=pk)
-            form = BookForm(instance=book)
+        form = BookForm()
     context = {'form': form}
     return render(request, 'base/add_book.html', context)
 
@@ -153,3 +144,52 @@ def delete_read(request, pk=None):
             return redirect("base:index")
     context = {'action': action}
     return render(request, 'base/delete_read.html', context)
+
+
+@login_required
+def books(request):
+    books = Book.objects.all()
+    context = {'books': books}
+    return render(request, "base/books.html", context)
+
+
+@staff_member_required
+def edit_book(request, pk=None):
+    book = Book.objects.get(pk=pk)
+    if request.method == "POST":
+        form = BookForm(request.POST, instance=book)
+
+        # om te kijken of de delete knop is ingedrukt of niet
+        is_delete = request.POST.get("delete") is not None
+        if is_delete is True:
+            book.delete()
+            messages.success(request, "boek is succesvol verwijderd")
+            return redirect("base:index")
+
+        # pak de originele titel en schrijver om te kijken of het misschien een nieuw boek is
+        # die moet dan ook weer getest zijn of het stiekem niet al bestaat in de database
+        orig_title = book.title
+        new_title = request.POST.get("title")
+        orig_author = book.author
+        new_author = request.POST.get("author")
+        # je kan er wel alvast vanuit gaan dat het niet bestaat en dus gewoon verder kan gaan
+        does_exist = False
+        if orig_title != new_title and orig_author != new_author:
+            does_exist = Book.objects.filter(title=new_title, author=new_author).exists()
+
+        # het is toch stiekem een boek die al bestaat
+        if does_exist is True:
+            form.add_error("title", "Het veranderde book met deze titel en schrijver bestaat al.")
+
+        if form.is_valid():
+            book = form.save(commit=False)
+            # als de admin het boek heeft aangepast lijkt het mij dat het ook gelijk is goedgekeurd
+            book.approved = True
+            book.approved_by = request.user
+            book.save()
+            messages.success(request, "Het boek is succesvol opgeslagen!")
+            return redirect("base:index")
+    else:
+        form = BookForm(instance=book)
+    context = {'form': form}
+    return render(request, "base/edit_book.html", context)

@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Alle boeken{% endblock %}
+{% block content %}
+	<h2>Alle Boeken</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Titel</th>
+				<th scope="col">Auteur</th>
+				<th scope="col">Genre</th>
+				<th scope="col">Pagina's</th>
+				<th scope="col">Goedgekeurd?</th>
+				{% if user.is_staff %}
+					<th scope="col">Aanpassen/Verwijderen</th>
+					<th scope="col">Goedkeuren</th>
+				{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for book in books %}
+				<tr>
+					<th scope="row">{{ book.pk }}</th>
+					<td>{{ book.title }}</td>
+					<td>{{ book.author }}</td>
+					<td>{{ book.genre }}</td>
+					<td>{{ book.number_of_pages }}</td>
+					<td>{{ book.approved|yesno:"Goedgekeurd,Niet Goedgekeurd" }}</td>
+					{% if user.is_staff %}
+						<td><a class="btn" href="{% url 'base:edit_book' book.pk %}">Aanpassen</a></td>
+						<td><a class="btn">Goedkeuren</a></td>
+					{% endif %}
+				</tr>
+			{% empty %}
+				<tr>
+					<td colspan="6">Er zijn geen boeken</td>
+				</tr>		
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
