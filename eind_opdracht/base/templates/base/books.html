@@ -21,7 +21,7 @@
 		<tbody>
 			{% for book in books %}
 				<tr>
-					<th scope="row">{{ book.pk }}</th>
+					<th scope="row"><a href="{% url 'base:book_detail' book.pk %}">{{ book.pk }}</a></th>
 					<td>{{ book.title }}</td>
 					<td>{{ book.author }}</td>
 					<td>{{ book.genre }}</td>

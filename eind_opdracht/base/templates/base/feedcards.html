@@ -7,7 +7,7 @@
 					<strong>Gelezen op: </strong> {{ action.date }} <br>
 				</div>
 				<div class="card-body">
-					<h3 class="card-title">{{ action.book.title }}</h3>
+					<h3 class="card-title"><a href="{% url 'base:book_detail' action.book.pk %}">{{ action.book.title }}</a></h3>
 					<h4 class="card-subtitle mb-2 text-muted">{{ action.book.author }}</h4>
 					<span style="display: none;" class="user_score">{{ action.score }}</span>
 					<strong>Score: </strong><span class="stars"></span><br>
