@@ -8,6 +8,7 @@ from base.forms import LeesActieForm
 from .models import Book, Read, Profile
 from .forms import BookForm, LeesActieForm, ProfileUpdateForm
 from django.contrib import messages
+from django.db.models import Avg
 
 
 def index(request):
@@ -194,6 +195,7 @@ def edit_book(request, pk=None):
     context = {'form': form}
     return render(request, "base/edit_book.html", context)
 
+
 def approve_book(request, pk):
     book = Book.objects.get(pk=pk)
     book.approved = True
@@ -201,3 +203,13 @@ def approve_book(request, pk):
     book.save()
     messages.success(request, "Het boek is succesvol goedgekeurd!")
     return redirect("base:books")
+
+
+@login_required
+def book_detail(request, pk=None):
+    book = Book.objects.get(pk=pk)
+    # filter alle leesacties op het boek om daar het gemiddelde van te kunnen krijgen
+    reads = Read.objects.filter(book=book)
+    avg = reads.aggregate(Avg('score'))
+    context = {'book': book, 'avg': avg, 'actions': reads, 'read_amounts': len(reads)}
+    return render(request, 'base/book_detail.html', context)

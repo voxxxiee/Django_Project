@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+				<h1>{{ book.title }}</h1>
+				<em>{{ book.author }} ({{ book.number_of_pages }} pagina's)</em><br>
+				<p>Gemiddelde score: 
+					<span id="stars"></span>
+					<span id="user_score">{{ avg.score__avg }}</span>
+					<br>
+					Aantal keer gelezen: <em>{{ read_amounts }}</em>
+				</p>
+				<hr>
+				<h2>Alle leesacties van dit boek</h2>
+				{% include "base/feedcards.html" %}
+            </div>
+        </div>
+    </div>
+	<script>
+		window.onload = () => {
+			printStars();
+		};
+	</script>
+{% endblock %}
