@@ -195,7 +195,7 @@ def edit_book(request, pk=None):
     context = {'form': form}
     return render(request, "base/edit_book.html", context)
 
-@login_required
+@staff_member_required
 def approve_book(request, pk):
     book = Book.objects.get(pk=pk)
     book.approved = True
@@ -218,7 +218,7 @@ def book_detail(request, pk=None):
     context = {'book': book, 'avg': avg, 'actions': reads, 'read_amounts': len(reads), 'approve': approve}
     return render(request, 'base/book_detail.html', context)
 
-# if a user wants to add read details to a book from the book detail page the book is filled in automatically
+@login_required
 def add_read_detail(request, book_id=None):
     book = Book.objects.get(pk=book_id)
     form = LeesActieForm(initial={'book': book})
