@@ -74,7 +74,7 @@ def add_read(request, pk=None):
             time = form.save(commit=False)
             time.user = request.user
             time.save()
-            messages.success(request, "De leesacite is succesvol opgeslagen!")
+            messages.success(request, "De leesactie is succesvol opgeslagen!")
             # stuur de gebruiker naar zijn/haar pagina met leesacties
             return redirect("base:readfeed", user=request.user)
     else:
@@ -195,7 +195,7 @@ def edit_book(request, pk=None):
     context = {'form': form}
     return render(request, "base/edit_book.html", context)
 
-
+@login_required
 def approve_book(request, pk):
     book = Book.objects.get(pk=pk)
     book.approved = True
@@ -208,8 +208,29 @@ def approve_book(request, pk):
 @login_required
 def book_detail(request, pk=None):
     book = Book.objects.get(pk=pk)
+    if book.approved is False:
+        approve = "Niet goedgekeurd"
+    else:
+        approve = "Goedgekeurd door " + book.approved_by.username
     # filter alle leesacties op het boek om daar het gemiddelde van te kunnen krijgen
     reads = Read.objects.filter(book=book)
     avg = reads.aggregate(Avg('score'))
-    context = {'book': book, 'avg': avg, 'actions': reads, 'read_amounts': len(reads)}
+    context = {'book': book, 'avg': avg, 'actions': reads, 'read_amounts': len(reads), 'approve': approve}
     return render(request, 'base/book_detail.html', context)
+
+# if a user wants to add read details to a book from the book detail page the book is filled in automatically
+def add_read_detail(request, book_id=None):
+    book = Book.objects.get(pk=book_id)
+    form = LeesActieForm(initial={'book': book})
+    if request.method == "POST":
+        form = LeesActieForm(request.POST)
+        if form.is_valid():
+            time = form.save(commit=False)
+            time.user = request.user
+            time.save()
+            messages.success(request, "De leesactie is succesvol opgeslagen!")
+            # stuur de gebruiker naar zijn/haar pagina met leesacties
+            return redirect("base:readfeed", user=request.user)
+    context = {'form': form}
+    return render(request, 'base/add_read.html', context)
+    
