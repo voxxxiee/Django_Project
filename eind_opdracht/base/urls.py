@@ -13,6 +13,7 @@ urlpatterns = [
     path('bookform/<int:pk>/', views.add_book, name="bookform"),
     path('readform/', views.add_read, name="readform"),
     path('readform/<int:pk>/', views.add_read, name="readform"),
+    path('readform/<int:book_id>/', views.add_read_detail, name="readform2"),
     path('readfeed/', views.read_feed, name="readfeed"),
     path('readfeed/<str:user>/', views.read_feed, name="readfeed"),
     path('profile/', views.profile_page, name="profile"),
