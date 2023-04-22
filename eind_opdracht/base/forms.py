@@ -28,6 +28,12 @@ class LeesActieForm(forms.ModelForm):
             'score': forms.NumberInput(attrs={'type': 'range', 'min': 0, 'max': 5, 'class': 'form-range', 'required': True}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(LeesActieForm, self).__init__(*args, **kwargs)
+        books = Book.objects.filter(approved=True)
+        self.fields['book'].queryset = books
+
+
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
