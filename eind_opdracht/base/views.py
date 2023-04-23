@@ -133,7 +133,7 @@ def update_profile(request):
         if form.is_valid():
             profile = form.save(commit=False)
             profile.save()
-            return redirect('base:profile')
+            return redirect( 'base:profile', user=request.user)
     else:
         form = ProfileUpdateForm(instance=profile)
     context = {'form': form}
