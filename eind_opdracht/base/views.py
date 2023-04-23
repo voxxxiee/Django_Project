@@ -112,10 +112,15 @@ def register(request):
 
 
 @login_required
-def profile_page(request):
-    user = request.user
-    profile = Profile.objects.get(user=user)
-    context = {'profile': profile}
+def profile_page(request, user=None):
+    if user is not None:
+        reads = Read.objects.filter(user__username=user)
+        profile = Profile.objects.get(user__username=user)
+    else:
+        user = request.user
+        reads = Read.objects.filter(user=user)
+        profile = Profile.objects.get(user=user)
+    context = {'profile': profile, 'actions': reads}
     return render(request, 'base/profile_page.html', context)
 
 
@@ -215,7 +220,7 @@ def book_detail(request, pk=None):
     # filter alle leesacties op het boek om daar het gemiddelde van te kunnen krijgen
     reads = Read.objects.filter(book=book)
     avg = reads.aggregate(Avg('score'))
-    context = {'book': book, 'avg': avg, 'actions': reads, 'read_amounts': len(reads), 'approve': approve}
+    context = {'book': book, 'avg': avg, 'actions': reads, 'read_amounts': len(reads), 'approve': approve, 'approved': book.approved}
     return render(request, 'base/book_detail.html', context)
 
 @login_required

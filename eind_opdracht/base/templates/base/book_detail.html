@@ -13,7 +13,9 @@
 					<br>
 					Aantal keer gelezen: <em>{{ read_amounts }}</em>
 				</p>
-				<a href="{% url 'base:readform2' book.id %}" class="btn btn-primary">Leesactie toevoegen</a>
+				{% if approved == True %}
+					<a href="{% url 'base:readform2' book.id %}" class="btn btn-primary">Leesactie toevoegen</a>
+				{% endif %}
 				<hr>
 				<h2>Alle leesacties van dit boek</h2>
 				{% include "base/feedcards.html" %}
