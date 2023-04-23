@@ -21,7 +21,7 @@
 					{% endif %}
 				</div>
 				<div class="card-footer">
-					<strong>Gelezen door: </strong> {{ action.user }} <br>
+					<strong>Gelezen door: </strong> <a href="{% url 'base:profile' action.user %}">{{ action.user }}</a>
 				</div>
 			</div>
 		</div>
